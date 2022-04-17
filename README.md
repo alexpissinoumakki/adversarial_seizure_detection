@@ -1,5 +1,4 @@
-# adversarial_seizure_detection
-## Title: Adversarial representation learning for robust patient-independent epileptic seizure detection 
+# Adversarial representation learning for robust patient-independent epileptic seizure detection 
 
 **PDF: [J-BHI](https://ieeexplore.ieee.org/abstract/document/8994148), [arXiv](https://arxiv.org/abs/1909.10868)**
 
@@ -25,7 +24,7 @@ If you find our work useful for your research, please consider citing this paper
     }
 
 ## Datasets
-The cleaned dataset all_14sub.p (894 Mb) is too large to be uploaded here. Please download the original dataset at the TUH Corpus website (https://www.isip.piconepress.com/projects/tuh_eeg/html/downloads.shtml) and clean by yourself.
+The cleaned dataset all_14sub.p (894 Mb) is too large to be uploaded here. Please download the original dataset (*The TUH EEG Seizure Corpus (TUSZ)*) at the TUH Corpus website (https://www.isip.piconepress.com/projects/tuh_eeg/html/downloads.shtml) and clean by yourself.
 
 
 
