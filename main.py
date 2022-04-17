@@ -374,15 +374,15 @@ if __name__ == "__main__":
                 pred = sess.run(prediction_t, feed_dict={xs: feature_test, ys_t: label_test_t, keep_prob: keep})
                 print(f'training: {time.process_time() - ss_train}s, testing time: {time.process_time() - ss}s')
 
-                pickle.dump(att_, open(f'TUH_attention_P{str(step)}_backup.p', "wb"), protocol=2)
+                pickle.dump(att_, open(f'{str(P_ID)}_TUH_attention_P{str(step)}_backup.p', "wb"), protocol=2)
                 print(f'attention saved, person: {P_ID}')
 
             step += 1
 
         # save the cost history values for convergence analysis
-        pickle.dump(cost_his, open('cost_his.p', "wb"))
-        pickle.dump(cost_AE_his, open('cost_AE_his.p', "wb"))
-        pickle.dump(cost_t_his, open('cost_t_his.p', "wb"))
-        pickle.dump(cost_p_his, open('cost_p_his.p', "wb"))
-        pickle.dump(test_cost_t_his, open('test_cost_t_his.p', "wb"))
-        print("five losses are saved at Parkinson_seizure")
+        pickle.dump(cost_his, open(f'{str(P_ID)}_cost_his.p', "wb"))
+        pickle.dump(cost_AE_his, open(f'{str(P_ID)}_cost_AE_his.p', "wb"))
+        pickle.dump(cost_t_his, open(f'{str(P_ID)}_cost_t_his.p', "wb"))
+        pickle.dump(cost_p_his, open(f'{str(P_ID)}_cost_p_his.p', "wb"))
+        pickle.dump(test_cost_t_his, open(f'{str(P_ID)}_test_cost_t_his.p', "wb"))
+        print("five losses are saved at base directory")
