@@ -175,10 +175,11 @@ class CnnT(tf.keras.Model):
         dim_hidden = 21
         self.fc2 = tf.keras.layers.Dense(units=dim_hidden,
                                          activation='sigmoid')
-        # Attention layer
+        # Attention layer: Comment out the two lines below if running `attention` ablation
         self.fc3 = tf.keras.layers.Dense(units=dim_hidden,
                                          activation='sigmoid')
         self.multiply = tf.keras.layers.Multiply()
+
         self.fc4 = tf.keras.layers.Dense(units=n_class_t)
 
     def call(self, h_t, xs):
@@ -209,7 +210,7 @@ class CnnT(tf.keras.Model):
         fc3 = self.fc2(fc1)
         fc3 = self.dropout2(fc3)
 
-        # Attention layer
+        # Attention layer: Comment out the two lines below if running `attention` ablation
         att = self.fc3(xs)
         fc3 = self.multiply([fc3, att])
 
@@ -348,8 +349,6 @@ def loss_object(class1, class2, ae, xs, output, prediction_t, ys_t,
 
 def train_step(xs, ys_t, ys_p, model, optimizer, is_task):
     with tf.GradientTape() as tape:
-        # training=True is only needed if there are layers with different
-        # behavior during training versus inference (e.g. Dropout).
         output, prediction_t, prediction_p = model(xs, training=True)
         cost, cross_entropy_t = loss_object(model.cnn_t, model.cnn,
                                             model.conv_ae, xs, output,
@@ -369,9 +368,7 @@ def train_step(xs, ys_t, ys_p, model, optimizer, is_task):
 
 
 def test_step(feature_test, label_test_t, model):
-    # training=False is only needed if there are layers with different
-    # behavior during training versus inference (e.g. Dropout).
-    _, prediction_t, _ = model(feature_test, training=True)
+    _, prediction_t, _ = model(feature_test, training=False)
 
     return compute_accuracy_t(prediction_t, label_test_t)
 
@@ -490,6 +487,7 @@ def main(mode: ExecutionMode, data_dir: str, model_dir: str):
             t_optimizer = tf.keras.optimizers.Adam(lr)
 
             pbar = tqdm.tqdm(range(1, 251))
+            best_acc = float('-inf')
             print(f'subject {P_ID}')
             for idx in pbar:  # 250 iterations
                 task_acc = t_acc = 0.0
@@ -508,6 +506,11 @@ def main(mode: ExecutionMode, data_dir: str, model_dir: str):
                 if mode == ExecutionMode.FULL and idx % 10 == 0:
                     start = time.time()
                     t_acc = test_step(feature_test, lbl_test_t, model)
+                    if t_acc > best_acc:
+                        best_acc = t_acc
+                        print(f"best test accuracy: {best_acc}")
+                        # Use `models/subject_{P_ID}_ablated_model` for the ablated model
+                        model.save(f'models/subject_{P_ID}_model')
                     p_out.append("test accuracy task: {:.3f}".format(t_acc))
                     test_time += time.time() - start
 
