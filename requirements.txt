@@ -1,6 +1,5 @@
-h5py
+matplotlib
 numpy
 pyyaml
 sklearn
 tensorflow<=2.6.2
-tqdm
