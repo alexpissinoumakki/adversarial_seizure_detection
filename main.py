@@ -3,76 +3,12 @@ from dataset import load_data, get_batches
 from model import Model
 import tensorflow as tf
 import time
-
-
-def compute_accuracy_t(prediction_t, v_ys):
-    """This function only calculates the acc of CNN_task.
-    """
-    correct_prediction = tf.math.equal(tf.math.argmax(prediction_t, axis=1),
-                                       tf.math.argmax(v_ys, axis=1))
-    accuracy = tf.math.reduce_mean(tf.cast(correct_prediction, tf.float64))
-    return accuracy
-
-
-def compute_accuracy_p(prediction_p, v_ys):
-    """This function only calculates the acc of CNN_task.
-    """
-    correct_prediction = tf.math.equal(tf.math.argmax(prediction_p, axis=1),
-                                       tf.math.argmax(v_ys, axis=1))
-    accuracy = tf.math.reduce_mean(tf.cast(correct_prediction, tf.float64))
-    return accuracy
-
-
-def loss_object(class1, class2, ae, xs, output, prediction_t, ys_t,
-                prediction_p, ys_p):
-    """cost calculation"""
-    l2_ae = 0.005 * sum(tf.nn.l2_loss(var) for var in ae.trainable_variables)
-    l2_class = 0.005 * sum(tf.nn.l2_loss(var) for var in class1.trainable_variables)
-    l2_class += 0.005 * sum(tf.nn.l2_loss(var) for var in class2.trainable_variables)
-
-    cross_entropy_t = 5 * tf.reduce_mean(
-        input_tensor=tf.nn.softmax_cross_entropy_with_logits(
-            logits=prediction_t, labels=tf.stop_gradient(ys_t)))
-    cross_entropy_p = tf.reduce_mean(
-        input_tensor=tf.nn.softmax_cross_entropy_with_logits(
-            logits=prediction_p, labels=tf.stop_gradient(ys_p)))
-
-    xs_ = tf.cast(xs, tf.float32)
-    cost_ae = tf.reduce_mean(input_tensor=tf.pow(xs_ - output, 2)) + l2_ae
-
-    cost = cost_ae + cross_entropy_t + cross_entropy_p + l2_class + l2_ae
-    return cost, cross_entropy_t
-
-
-def train_step(xs, ys_t, ys_p, model, optimizer, is_task):
-    with tf.GradientTape() as tape:
-        output, prediction_t, prediction_p = model(xs, training=True)
-        cost, cross_entropy_t = loss_object(model.cnn_t, model.cnn,
-                                            model.conv_ae, xs, output,
-                                            prediction_t, ys_t, prediction_p,
-                                            ys_p)
-    if is_task:
-        task_gradients = tape.gradient(cost, model.trainable_variables)
-        optimizer.apply_gradients(
-            zip(task_gradients, model.trainable_variables))
-
-        return compute_accuracy_t(prediction_t, ys_t)
-    else:
-        t_gradients = tape.gradient(cross_entropy_t, model.trainable_variables)
-        optimizer.apply_gradients(zip(t_gradients, model.trainable_variables))
-
-        return compute_accuracy_p(prediction_p, ys_p)
-
-
-def test_step(feature_test, label_test_t, model):
-    _, prediction_t, _ = model(feature_test, training=False)
-
-    return compute_accuracy_t(prediction_t, label_test_t)
+from utils import train_step, test_step
 
 
 def main(mode: ExecutionMode):
     train_time, test_time = 0.0, 0.0
-    for P_ID, (feature_train, lbl_train_t, lbl_train_p, feature_test, lbl_test_t) in load_data(data_dir=DATA_DIR):
+    for p_id, (feature_train, lbl_train_t, lbl_train_p, feature_test, lbl_test_t) in load_data(data_dir=DATA_DIR):
         model = Model()
 
         if mode == ExecutionMode.EVALUATION:
@@ -87,7 +23,7 @@ def main(mode: ExecutionMode):
             t_optimizer = tf.keras.optimizers.Adam(LEARNING_RATE)
 
             best_acc = float('-inf')
-            print(f'subject {P_ID}')
+            print(f'subject {p_id}')
             for idx in range(1, NUM_ITERATIONS + 1):
                 task_acc = t_acc = 0.0
                 start = time.time()
@@ -106,8 +42,8 @@ def main(mode: ExecutionMode):
                     if t_acc > best_acc:
                         best_acc = t_acc
                         print(f"best test accuracy: {best_acc}")
-                        # Use `models/subject_{P_ID}_ablated_model` for the ablated model
-                        model.save(f'models/subject_{P_ID}_model')
+                        # Use `models/subject_{p_id}_ablated_model` for the ablated model
+                        model.save(f'models/subject_{p_id}_model')
                     p_out.append("test accuracy task: {:.3f}".format(t_acc))
                     test_time += time.time() - start
 

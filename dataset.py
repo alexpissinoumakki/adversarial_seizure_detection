@@ -2,7 +2,7 @@ from constants import NUM_CLASSES, NUM_FEATURES, SAMPLE_PER_SUBJECT, SEQUENCE_LE
 import numpy as np
 import os
 import pickle
-import sklearn
+import sklearn.preprocessing
 
 
 def one_hot(y_):
@@ -65,7 +65,6 @@ def load_data(data_dir):
     for hh in range(1, NUM_TRAINING):
         ll_new = np.ones([n_sample_, 1]) * hh
         ll = np.vstack((ll, ll_new))
-    print('the shape of made person label', ll.shape)
 
     ll_test = np.ones([n_sample_, 1]) * NUM_TRAINING
 
@@ -117,7 +116,6 @@ def get_batches(feature_train, lbl_train_t, lbl_train_p, batch_size):
     for i in range(n_group):
         f = lbl_train_t[0 + batch_size * i:batch_size + batch_size * i, :]
         train_lbl_t.append(f)
-    print(train_lbl_t[0].shape)
 
     train_lbl_p = []
     for i in range(n_group):

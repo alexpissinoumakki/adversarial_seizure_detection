@@ -36,8 +36,7 @@ class ConvAE(tf.keras.Model):
         self.dropout = tf.keras.layers.Dropout(DROPOUT_RATE)
 
     def call(self, xs):
-        input_ = tf.reshape(xs,
-                            [-1, SEQUENCE_LENGTH, NUM_FEATURES, 1])  # [200, 14]
+        input_ = tf.reshape(xs, [-1, SEQUENCE_LENGTH, NUM_FEATURES, 1])  # [200, 14]
         input_ = self.batch1(input_)
         input_ = self.dropout(input_)
 
@@ -100,7 +99,7 @@ class CnnT(tf.keras.Model):
         dim_hidden = 21
         self.fc2 = tf.keras.layers.Dense(units=dim_hidden,
                                          activation='sigmoid')
-        # Attention layer: Comment out the two lines below if running `attention` ablation
+        # Attention layer: Comment out the three lines below if running `attention` ablation
         self.fc3 = tf.keras.layers.Dense(units=dim_hidden,
                                          activation='sigmoid')
         self.multiply = tf.keras.layers.Multiply()
@@ -229,8 +228,8 @@ class Model(tf.keras.Model):
         w_1, w_2, w_3, w_4 = 2, 2, 2, 1
 
         """CNN code for task"""
-        self.cnn_t = CnnT(depth_1, depth_2, depth_3, depth_4, l_1, l_2, l_3,
-                          l_4, w_1, w_2, w_3, w_4)
+        self.cnn_t = CnnT(depth_1, depth_2, depth_3, depth_4, l_1, l_2, l_3, l_4,
+                          w_1, w_2, w_3, w_4)
         """CNN code for person"""
         self.cnn = Cnn(depth_1, depth_2, depth_3, depth_4, l_1, l_2, l_3, l_4,
                        w_1, w_2, w_3, w_4)
