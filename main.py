@@ -1,20 +1,24 @@
-from constants import LEARNING_RATE, NUM_ITERATIONS, DATA_DIR, ExecutionMode
+from argparse import ArgumentParser
+from constants import LEARNING_RATE, NUM_ITERATIONS, DATA_DIR, MODELS_DIR, ExecutionMode
 from dataset import load_data, get_batches
 from model import Model
+import os
 import tensorflow as tf
 import time
 from utils import train_step, test_step
 
 
-def main(mode: ExecutionMode):
+def main(mode: ExecutionMode, data_dir: str, models_dir: str, model_type: str):
     train_time, test_time = 0.0, 0.0
-    for p_id, (feature_train, lbl_train_t, lbl_train_p, feature_test, lbl_test_t) in load_data(data_dir=DATA_DIR):
-        model = Model()
-
+    for p_id, (feature_train, lbl_train_t, lbl_train_p, feature_test, lbl_test_t) in load_data(data_dir=data_dir):
+        print(f"Processing subject {p_id}")
+        model_path = os.path.join(models_dir, model_type, f"subject_{p_id}_{model_type}_model")
         if mode == ExecutionMode.EVALUATION:
+            model = tf.keras.models.load_model(model_path)
             t_acc = test_step(feature_test, lbl_test_t, model)
             print("test accuracy task: {:.3f}".format(t_acc))
         else:
+            model = Model()
             train_fea, train_lbl_t, train_lbl_p, num_batches = get_batches(feature_train, lbl_train_t, lbl_train_p,
                                                                            batch_size=feature_test.shape[0])
 
@@ -23,7 +27,6 @@ def main(mode: ExecutionMode):
             t_optimizer = tf.keras.optimizers.Adam(LEARNING_RATE)
 
             best_acc = float('-inf')
-            print(f'subject {p_id}')
             for idx in range(1, NUM_ITERATIONS + 1):
                 task_acc = t_acc = 0.0
                 start = time.time()
@@ -42,8 +45,7 @@ def main(mode: ExecutionMode):
                     if t_acc > best_acc:
                         best_acc = t_acc
                         print(f"best test accuracy: {best_acc}")
-                        # Use `models/subject_{p_id}_ablated_model` for the ablated model
-                        model.save(f'models/subject_{p_id}_model')
+                        model.save(model_path)
                     p_out.append("test accuracy task: {:.3f}".format(t_acc))
                     test_time += time.time() - start
 
@@ -67,4 +69,17 @@ if __name__ == "__main__":
             print(e)
     assert tf.executing_eagerly()
 
-    main(mode=ExecutionMode.TRAINING)
+    parser = ArgumentParser()
+    parser.add_argument("--mode", type=str, default="train", choices=["train", "eval"])
+    parser.add_argument("--data_dir", type=str, default=DATA_DIR)
+    parser.add_argument("--models_dir", type=str, default=MODELS_DIR)
+    parser.add_argument("--model_type", type=str, default="ablated", choices=["ablated", "original"])
+    args = parser.parse_args()
+    if args.mode == "train":
+        print("start training")
+        main(mode=ExecutionMode.TRAINING, data_dir=args.data_dir,
+             models_dir=args.models_dir, model_type=args.model_type)
+    elif args.mode == "eval":
+        print("start evaluation")
+        main(mode=ExecutionMode.EVALUATION, data_dir=args.data_dir,
+             models_dir=args.models_dir, model_type=args.model_type)

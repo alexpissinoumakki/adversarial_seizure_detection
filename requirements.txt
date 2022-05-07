@@ -1,4 +1,5 @@
 matplotlib
+mdtable
 numpy
 pyyaml
 sklearn

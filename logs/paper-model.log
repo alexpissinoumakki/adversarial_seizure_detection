@@ -1,28 +1,28 @@
 35.5s 31 subject 0
-36.1s 32 test accuracy task: 0.841
+36.1s 32 test accuracy task: 0.841; test sensitivity task: 0.974; test specificity task: 0.881
 1899.6s 304 subject 1
-1906.4s 305 test accuracy task: 0.826
+1906.4s 305 test accuracy task: 0.826; test sensitivity task: 0.974; test specificity task: 0.881
 3685.3s 561 subject 2
-3692.4s 562 test accuracy task: 0.978
+3692.4s 562 test accuracy task: 0.978; test sensitivity task: 0.974; test specificity task: 0.881
 5734.9s 860 subject 3
-5742.1s 861 test accuracy task: 0.774
+5742.1s 861 test accuracy task: 0.774; test sensitivity task: 0.974; test specificity task: 0.881
 7621.4s 1135 subject 4
-7628.7s 1136 test accuracy task: 0.842
+7628.7s 1136 test accuracy task: 0.842; test sensitivity task: 0.974; test specificity task: 0.881
 9413.4s 1392 subject 5
-9420.4s 1393 test accuracy task: 0.733
+9420.4s 1393 test accuracy task: 0.733; test sensitivity task: 0.974; test specificity task: 0.881
 11310.8s 1669 subject 6
-11318.1s 1670 test accuracy task: 0.911
+11318.1s 1670 test accuracy task: 0.911; test sensitivity task: 0.974; test specificity task: 0.881
 13235.8s 1950 subject 7
-13243.0s 1951 test accuracy task: 0.914
+13243.0s 1951 test accuracy task: 0.914; test sensitivity task: 0.974; test specificity task: 0.881
 15037.2s 2207 subject 8
-15044.4s 2208 test accuracy task: 0.697
+15044.4s 2208 test accuracy task: 0.697; test sensitivity task: 0.974; test specificity task: 0.881
 16852.7s 2466 subject 9
-16859.9s 2467 test accuracy task: 0.652
+16859.9s 2467 test accuracy task: 0.652; test sensitivity task: 0.974; test specificity task: 0.881
 18666.0s 2725 subject 10
-18673.2s 2726 test accuracy task: 0.923
+18673.2s 2726 test accuracy task: 0.923; test sensitivity task: 0.974; test specificity task: 0.881
 20559.5s 3000 subject 11
-20566.6s 3001 test accuracy task: 0.604
+20566.6s 3001 test accuracy task: 0.604; test sensitivity task: 0.974; test specificity task: 0.881
 22357.8s 3257 subject 12
-22364.5s 3258 test accuracy task: 0.772
+22364.5s 3258 test accuracy task: 0.772; test sensitivity task: 0.974; test specificity task: 0.881
 24176.2s 3518 subject 13
-24182.8s 3519 test accuracy task: 0.787
+24182.8s 3519 test accuracy task: 0.787; test sensitivity task: 0.974; test specificity task: 0.881

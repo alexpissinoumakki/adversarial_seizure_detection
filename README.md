@@ -1,4 +1,4 @@
-# Adversarial representation learning for robust patient-independent epileptic seizure detection
+# Adversarial representation learning for robust patient-independent epileptic seizure detection – Reproduction
 
 **PDF: [J-BHI](https://ieeexplore.ieee.org/abstract/document/8994148)
 , [arXiv](https://arxiv.org/abs/1909.10868)**
@@ -6,12 +6,12 @@
 **Paper Authors: [Xiang Zhang](http://xiangzhang.info/)
 ([xiang_zhang@hms.harvard.edu](mailto:xiang_zhang@hms.harvard.edu)),
 [Lina Yao](https://www.linayao.com/)
-([lina.yao@unsw.edu.au](mailto:lina.yao@unsw.edu.au)), Manqing Dong, Zhe Liu,
-Yu Zhang, Yong Li**
+([lina.yao@unsw.edu.au](mailto:lina.yao@unsw.edu.au)), Manqing Dong, Zhe Liu, Yu Zhang, Yong Li**
 
-**Repository Contributors: Alex Pissinou Makki**
+**Repository Contributors: Alex Pissinou Makki ([alexpissinoumakki@gmail.com](mailto:alexpissinoumakki@gmail.com))**
 
 # Table of Contents
+
 1. [Overview](#overview)
 2. [Dependencies](#dependencies)
 3. [Dataset](#dataset)
@@ -23,20 +23,17 @@ Yu Zhang, Yong Li**
 9. [Miscellaneous](#miscellaneous)
 10. [License](#license)
 
-
 ## Overview
 
-This repository contains reproducible codes for the proposed
-adversarial_seizure_detection model.  
-In this paper, the authors propose a novel and generic deep learning framework
-aiming at patient-independent epileptic seizure diagnosis. The proposed
-approach refines the seizure-specific representation by eliminating the
-inter-subject noise through adversarial training. Moreover, the authors involve
-the attention mechanism to learn the contribution of each EEG channel in the
-epileptic seizure detection, which empowers the method with great
-explainability. For more details on the algorithm, please refer to the paper
+This repository contains reproducible codes for the proposed adversarial_seizure_detection model.  
+In this paper, the authors propose a novel and generic deep learning framework aiming at patient-independent epileptic
+seizure diagnosis. The proposed approach refines the seizure-specific representation by eliminating the inter-subject
+noise through adversarial training. Moreover, the authors involve the attention mechanism to learn the contribution of
+each EEG channel in the epileptic seizure detection, which empowers the method with great explainability. For more
+details on the algorithm, please refer to the paper
 
 ## Dependencies
+
 <!--
 f you are using Python, this means providing a requirements.txt file (if using
 pip and virtualenv), providing environment.yml file (if using anaconda), or a
@@ -52,24 +49,22 @@ consider using Docker and upload a Docker image of your environment into
 Dockerhub.
 -->
 
-Dependencies required to run this project are provided in `requirements.txt`.
-Please follow the steps below to set up your environment for this project:
+Dependencies required to run this project are provided in `requirements.txt`. Please follow the steps below to set up
+your environment for this project:
 
 #### 1. [_Recommended_, Optional] Create a virtual environment
 
-This project uses Python3.6+, so we recommend that you have at least Python3.6
-installed on your machine. YOu can refer to this
-[guide](https://docs.python-guide.org/starting/installation/) to help you in
-installation of Python. Once you have Python3.6+ installed, in this project's
-directory, you can use the following command:
+This project uses Python3.6+, so we recommend that you have at least Python3.6 installed on your machine. YOu can refer
+to this
+[guide](https://docs.python-guide.org/starting/installation/) to help you in installation of Python. Once you have
+Python3.6+ installed, in this project's directory, you can use the following command:
 
 ```shell
 python3 -m venv venv
 ```
 
-to create a Python3.6+ virtual environment. We will use this environment for
-this project to make sure all changes / package installations are localized and
-can be easily reversed. Make sure to have activated this virtual environment
+to create a Python3.6+ virtual environment. We will use this environment for this project to make sure all changes /
+package installations are localized and can be easily reversed. Make sure to have activated this virtual environment
 before proceeding to the next steps by running:
 
 ```shell
@@ -78,27 +73,28 @@ source venv/bin/activate
 
 #### 2. Install the dependencies
 
-You can use the provided `requirements.txt` file to install all the required
-dependencies using the command:
+You can use the provided `requirements.txt` file to install all the required dependencies using the command:
 
 ```shell
-python -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
+
+***Note:*** For the rest of the instructions, please ensure that you have activated the virtual environment created
+in step 1.
 
 ## Dataset
 
-The cleaned dataset `all_14sub.p` (894 Mb) is too large to be included here.
-You can either:
+The cleaned dataset `all_14sub.p` (894 Mb) is too large to be included here. You can either:
 
-1. Download the original dataset (*The TUH EEG Seizure Corpus (TUSZ)*) at the
-   TUH Corpus website
-   [here](https://www.isip.piconepress.com/projects/tuh_eeg/html/downloads.shtml)
-   , and perform the "cleaning" operations mentioned in the paper or
-2. Contact [alexpissinoumakki@gmail.com](mailto:alexpissinoumakki@gmail.com) to
-   provide you with the cleaned dataset used in this repository provided by the
-   authors of this paper.
+1. Download the original dataset (*The TUH EEG Seizure Corpus (TUSZ)*) at the TUH Corpus website
+   [here](https://www.isip.piconepress.com/projects/tuh_eeg/html/downloads.shtml), and perform the "cleaning"
+operations mentioned in the paper or
+2. Contact [alexpissinoumakki@gmail.com](mailto:alexpissinoumakki@gmail.com) to provide you with the cleaned dataset
+   used in this repository provided by the authors of this paper.
+Once you have the cleaned dataset, make sure it is named `all_14sub.p` and placed in the `data/` directory.
 
 ## Training code
+
 <!--
 Your code should have a training script that can be used to obtain the
 principal results stated in the paper. This means you should include
@@ -111,7 +107,18 @@ You can provide a documented command line wrapper such as train.py to serve as
 a useful entry point for your users.
 -->
 
+To run the training code using the _original_ model, you can use the following command:
+```shell
+python3 main.py --mode train --data_dir data/ --models_dir models/ --model_type "original"
+```
+To run the evaluation code using the _ablated_ model, you can use the following command:
+```shell
+python3 main.py --mode train --data_dir data/ --models_dir models/ --model_type "ablated"
+```
+___Note:___ The above code will overwrite the existing models in the `models/` directory.
+
 ## Evaluation code
+
 <!--
 Model evaluation and experiments often depend on subtle details that are not
 always possible to explain in the paper. This is why including the exact code
@@ -123,7 +130,20 @@ You can provide a documented command line wrapper such as eval.py to serve as
 a useful entry point for your users.
 -->
 
+To run the evaluation code using the _original_ model, you can use the following command:
+```shell
+python3 main.py --mode eval --data_dir data/ --models_dir models/ --model_type "original"
+```
+To run the evaluation code using the _ablated_ model, you can use the following command:
+```shell
+python3 main.py --mode eval --data_dir data/ --models_dir models/ --model_type "ablated"
+```
+
+Please ensure that the models directory and the data directory are accessible and contain
+the pre-trained models and the cleaned dataset, respectively.
+
 ## Pre-trained model
+
 <!--
 Training a model from scratch can be time-consuming and expensive. One way to
 increase trust in your results is to provide a pre-trained model that the
@@ -138,9 +158,28 @@ Lastly, some users might want to try out your model to see if it works on some
 example data. Providing pre-trained models allows your users to play around
 with your work and aids understanding of the paper's achievements.
 -->
+The pre-trained models are available in the `models/` directory. The hierarchy is:
+```markdown
+models/
+    |- main/
+    |   |- subject_{id}_{metric}_main_model/
+    |   |- ...
+    |- ablated/
+    |   |- subject_{id}_{metric}_ablated_model/
+    |   |- ...
+    |- v1/ -- old version of the models
+```
 
+The models saved in the `subject_{id}_{metric}_{model_name}_model/` directories are saved
+in the SavedModel format ([link](https://www.tensorflow.org/tutorials/keras/save_and_load#savedmodel_format)). As such,
+you do not need access to the source code to use them and can simply use the following command:
+```python
+new_model = tf.keras.models.load_model('main/subject_{id}_{metric}_{model_name}_model/')
+```
+In the next section, you can use the pre-trained models to evaluate generate results.
 
 ## Results
+
 <!--
 5. README file includes table of results accompanied by precise command to run
 to produce those results
@@ -157,22 +196,122 @@ linking back to the full leaderboard that has up-to-date results from other
 papers. There are multiple leaderboard services where this information is
 stored.
 -->
+Results of the reproduction study are available in the following tables. You can run the following command to get the results:
+```shell
+python3 analysis.py
+```
+
+_Note_: The results are retrieved from the logs available in the `logs/` directory. Moreoever,
+the saved models in the `models/` directory are also used to generate sensitivity and specificity
+on the test set for each subject. `.csv` and `.json` files are also saved in the `figures/` directory and can be used
+for further analysis.
+
+<table>
+<tr>
+<td>
+<b>Accuracy</b> metrics table:
+
+| paper | reproduced | reproduced ablated |
+| ----- | ---------- | ------------------ |
+| 0.841 | 0.848      | 0.847              |
+| 0.826 | 0.602      | 0.6                |
+| 0.978 | 0.964      | 0.922              |
+| 0.774 | 0.745      | 0.721              |
+| 0.842 | 0.872      | 0.871              |
+| 0.733 | 0.617      | 0.613              |
+| 0.911 | 0.879      | 0.854              |
+| 0.914 | 0.879      | 0.923              |
+| 0.697 | 0.559      | 0.43               |
+| 0.652 | 0.6        | 0.6                |
+| 0.923 | 0.936      | 0.941              |
+| 0.604 | 0.607      | 0.6                |
+| 0.772 | 0.798      | 0.783              |
+| 0.787 | 0.814      | 0.816              |
+</td>
+<td>
+
+![accuracy metrics table](figures/accuracy.png "accuracy metrics table")
+</td>
+</tr>
+<tr>
+<td>
+<b>Sensitivity</b> metrics table:
+
+| paper | reproduced | reproduced ablated |
+| ----- | ---------- | ------------------ |
+| 0.974 | 0.191      | 0.474              |
+| 0.974 | 0.005      | 0.0                |
+| 0.974 | 0.857      | 0.577              |
+| 0.974 | 0.428      | 0.194              |
+| 0.974 | 0.208      | 0.277              |
+| 0.974 | 0.06       | 0.04               |
+| 0.974 | 0.854      | 0.263              |
+| 0.974 | 0.765      | 0.735              |
+| 0.974 | 1.0        | 1.0                |
+| 0.974 | 0.0        | 0.0                |
+| 0.974 | 0.573      | 0.548              |
+| 0.974 | 0.315      | 0.0                |
+| 0.974 | 0.12       | 0.014              |
+| 0.974 | 0.0        | 0.011              |
+</td>
+<td>
+
+![sensitivity metrics table](figures/sensitivity.png "sensitivity metrics table")
+</td>
+</tr>
+<tr>
+<td>
+<b>Specificity</b> metrics table:
+
+| paper | reproduced | reproduced ablated |
+| ----- | ---------- | ------------------ |
+| 0.881 | 1.0        | 0.985              |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 0.998      | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 0.47       | 0.405              |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 1.0        | 1.0                |
+| 0.881 | 0.999      | 0.999              |
+| 0.881 | 1.0        | 1.0                |
+</td>
+<td>
+
+![specificity metrics table](figures/specificity.png "specificity metrics table")
+</td>
+</tr>
+</table>
+
+Here, we have reported the maximum accuracy, sensitivity and specificity for each subject achieved
+with the reproduced and reproduced ablated models in TF2. The original implementation is in TF1.x which can
+explain some of the differences in the reported metrics. Moreover, it's unclear whether the authors reported their
+results as the average of the metrics for each subject or as the maximum of the metrics for each subject. This could
+also help explain the differences in the reported metrics.
+
+In the original paper, the authors provided the per-subject accuracy metrics. However, for specificity and sensitivity,
+they provided one value for the whole dataset. This, unfortunately, makes it difficult to compare the sensitivity and
+specificity metrics between the different papers.
 
 ## Citing
 
-If you find this work useful for your research, please consider citing the
-original paper:
+If you find this work useful for your research, please consider citing the original paper:
+
 ```
-    @article{zhang2020adversarial,
-      title={Adversarial representation learning for robust patient-independent epileptic seizure detection},
-      author={Zhang, Xiang and Yao, Lina and Dong, Manqing and Liu, Zhe and Zhang, Yu and Li, Yong},
-      journal={IEEE journal of biomedical and health informatics},
-      volume={24},
-      number={10},
-      pages={2852--2859},
-      year={2020},
-      publisher={IEEE}
-    }
+@article{zhang2020adversarial,
+  title={Adversarial representation learning for robust patient-independent epileptic seizure detection},
+  author={Zhang, Xiang and Yao, Lina and Dong, Manqing and Liu, Zhe and Zhang, Yu and Li, Yong},
+  journal={IEEE journal of biomedical and health informatics},
+  volume={24},
+  number={10},
+  pages={2852--2859},
+  year={2020},
+  publisher={IEEE}
+}
 ```
 
 ## Miscellaneous
