@@ -45,18 +45,20 @@ def analyze_metrics():
     # Get reproduced ablated model log map
     reproduced_ablated_log_map = get_log_map(os.path.join(LOG_DIR, "ablated-model.log"))
     for metric in ("accuracy", "sensitivity", "specificity"):
-        # Scatter plot metric
-        x = range(len(paper_log_map[metric]))
-        plt.figure()
-        plt.scatter(x, paper_log_map[metric], label="paper")
-        plt.scatter(x, reproduced_log_map[metric], label="reproduced")
-        plt.scatter(x, reproduced_ablated_log_map[metric], label="reproduced ablated")
-        plt.xlabel("Subject")
-        plt.ylabel(f"{metric.capitalize()}")
-        plt.title(f"{metric.capitalize()} of the paper model vs the reproduced model vs the reproduced ablated model")
-        plt.legend(bbox_to_anchor=(0, -0.3), loc="lower left", borderaxespad=0)
-        plt.savefig(os.path.join(OUTPUT_DIR, f"{metric}.png"), bbox_inches="tight", dpi=300)
-        print("Saved accuracy figure to {}".format(os.path.join(OUTPUT_DIR, f"{metric}.png")))
+        if metric == "accuracy":
+            # Scatter plot metric
+            x = range(len(paper_log_map[metric]))
+            plt.figure()
+            plt.scatter(x, paper_log_map[metric], label="paper")
+            plt.scatter(x, reproduced_log_map[metric], label="reproduced")
+            plt.scatter(x, reproduced_ablated_log_map[metric], label="reproduced ablated")
+            plt.xlabel("Subject")
+            plt.ylabel(f"{metric.capitalize()}")
+            plt.title(f"{metric.capitalize()} of the paper model vs the reproduced model vs"
+                      " the reproduced ablated model")
+            plt.legend(bbox_to_anchor=(0, -0.3), loc="lower left", borderaxespad=0)
+            plt.savefig(os.path.join(OUTPUT_DIR, f"{metric}.png"), bbox_inches="tight", dpi=300)
+            print("Saved {} figure to {}".format(metric, os.path.join(OUTPUT_DIR, f"{metric}.png")))
         save_metrics({"paper": paper_log_map[metric], "reproduced": reproduced_log_map[metric],
                       "reproduced_ablated": reproduced_ablated_log_map[metric]}, metric, f"{metric}.csv")
 

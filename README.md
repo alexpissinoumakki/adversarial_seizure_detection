@@ -30,7 +30,7 @@ In this paper, the authors propose a novel and generic deep learning framework a
 seizure diagnosis. The proposed approach refines the seizure-specific representation by eliminating the inter-subject
 noise through adversarial training. Moreover, the authors involve the attention mechanism to learn the contribution of
 each EEG channel in the epileptic seizure detection, which empowers the method with great explainability. For more
-details on the algorithm, please refer to the paper
+details on the algorithm, please refer to the paper.
 
 ## Dependencies
 
@@ -54,7 +54,7 @@ your environment for this project:
 
 #### 1. [_Recommended_, Optional] Create a virtual environment
 
-This project uses Python3.6+, so we recommend that you have at least Python3.6 installed on your machine. YOu can refer
+This project uses Python3.6+, so I recommend that you have at least Python3.6 installed on your machine. YOu can refer
 to this
 [guide](https://docs.python-guide.org/starting/installation/) to help you in installation of Python. Once you have
 Python3.6+ installed, in this project's directory, you can use the following command:
@@ -63,7 +63,7 @@ Python3.6+ installed, in this project's directory, you can use the following com
 python3 -m venv venv
 ```
 
-to create a Python3.6+ virtual environment. We will use this environment for this project to make sure all changes /
+to create a Python3.6+ virtual environment. I will use this environment for this project to make sure all changes /
 package installations are localized and can be easily reversed. Make sure to have activated this virtual environment
 before proceeding to the next steps by running:
 
@@ -115,7 +115,13 @@ To run the evaluation code using the _ablated_ model, you can use the following 
 ```shell
 python3 main.py --mode train --data_dir data/ --models_dir models/ --model_type "ablated"
 ```
-___Note:___ The above code will overwrite the existing models in the `models/` directory.
+Before using the ablated model, ensure that you have commented out the lines in `model.py` as instructed
+by the comments in that file.
+
+
+___Note:___ Executing the above commands will overwrite the existing models in the `models/` directory.
+
+
 
 ## Evaluation code
 
@@ -172,10 +178,16 @@ models/
 
 The models saved in the `subject_{id}_{metric}_{model_name}_model/` directories are saved
 in the SavedModel format ([link](https://www.tensorflow.org/tutorials/keras/save_and_load#savedmodel_format)). As such,
-you do not need access to the source code to use them and can simply use the following command:
+you do not need access to the source code to use them. You can simply use the following command:
 ```python
-new_model = tf.keras.models.load_model('main/subject_{id}_{metric}_{model_name}_model/')
+new_model = tf.keras.models.load_model('main/subject_{id}_{metric}_main_model/')
 ```
+You can replace the input to `load_model` with any of the subdirectories of the `main/` or `ablated/` directory.
+
+The model saved in `subject_{id}_{metric}_{model_name}_model` refers to the best trained `{model_name}` (either `main`
+or `ablated`) model with subject `{id}` used as the hold out test set and metric `{metric}` used as the metric to
+evaluate the model.
+
 In the next section, you can use the pre-trained models to evaluate generate results.
 
 ## Results
@@ -211,22 +223,22 @@ for further analysis.
 <td>
 <b>Accuracy</b> metrics table:
 
-| paper | reproduced | reproduced ablated |
-| ----- | ---------- | ------------------ |
-| 0.841 | 0.848      | 0.847              |
-| 0.826 | 0.602      | 0.6                |
-| 0.978 | 0.964      | 0.922              |
-| 0.774 | 0.745      | 0.721              |
-| 0.842 | 0.872      | 0.871              |
-| 0.733 | 0.617      | 0.613              |
-| 0.911 | 0.879      | 0.854              |
-| 0.914 | 0.879      | 0.923              |
-| 0.697 | 0.559      | 0.43               |
-| 0.652 | 0.6        | 0.6                |
-| 0.923 | 0.936      | 0.941              |
-| 0.604 | 0.607      | 0.6                |
-| 0.772 | 0.798      | 0.783              |
-| 0.787 | 0.814      | 0.816              |
+| paper | repro | repro ablated |
+| ----- | ----- | ------------- |
+| 0.841 | 0.848 | 0.847         |
+| 0.826 | 0.602 | 0.6           |
+| 0.978 | 0.964 | 0.922         |
+| 0.774 | 0.745 | 0.721         |
+| 0.842 | 0.872 | 0.871         |
+| 0.733 | 0.617 | 0.613         |
+| 0.911 | 0.879 | 0.854         |
+| 0.914 | 0.879 | 0.923         |
+| 0.697 | 0.559 | 0.43          |
+| 0.652 | 0.6   | 0.6           |
+| 0.923 | 0.936 | 0.941         |
+| 0.604 | 0.607 | 0.6           |
+| 0.772 | 0.798 | 0.783         |
+| 0.787 | 0.814 | 0.816         |
 </td>
 <td>
 
@@ -235,67 +247,29 @@ for further analysis.
 </tr>
 <tr>
 <td>
-<b>Sensitivity</b> metrics table:
+<b>Sensitivity</b> and <b>Specificity</b> metrics table for "repro":
 
-| paper | reproduced | reproduced ablated |
-| ----- | ---------- | ------------------ |
-| 0.974 | 0.191      | 0.474              |
-| 0.974 | 0.005      | 0.0                |
-| 0.974 | 0.857      | 0.577              |
-| 0.974 | 0.428      | 0.194              |
-| 0.974 | 0.208      | 0.277              |
-| 0.974 | 0.06       | 0.04               |
-| 0.974 | 0.854      | 0.263              |
-| 0.974 | 0.765      | 0.735              |
-| 0.974 | 1.0        | 1.0                |
-| 0.974 | 0.0        | 0.0                |
-| 0.974 | 0.573      | 0.548              |
-| 0.974 | 0.315      | 0.0                |
-| 0.974 | 0.12       | 0.014              |
-| 0.974 | 0.0        | 0.011              |
+| metric      | paper | repro |
+|-------------|-------|-------|
+| sensitivity | 0.974 | 0.857 |
+| specificity | 0.881 | 1.000 |
 </td>
 <td>
+<b>Sensitivity</b> and <b>Specificity</b> metrics table for "repro ablated":
 
-![sensitivity metrics table](figures/sensitivity.png "sensitivity metrics table")
-</td>
-</tr>
-<tr>
-<td>
-<b>Specificity</b> metrics table:
-
-| paper | reproduced | reproduced ablated |
-| ----- | ---------- | ------------------ |
-| 0.881 | 1.0        | 0.985              |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 0.998      | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 0.47       | 0.405              |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 1.0        | 1.0                |
-| 0.881 | 0.999      | 0.999              |
-| 0.881 | 1.0        | 1.0                |
-</td>
-<td>
-
-![specificity metrics table](figures/specificity.png "specificity metrics table")
+| metric      | paper | repro | repro ablated |
+|-------------|-------|-------|---------------|
+| sensitivity | 0.974 | 0.765 | 0.735         |
+| specificity | 0.881 | 1.000 | 1.000         |
 </td>
 </tr>
 </table>
 
-Here, we have reported the maximum accuracy, sensitivity and specificity for each subject achieved
-with the reproduced and reproduced ablated models in TF2. The original implementation is in TF1.x which can
-explain some of the differences in the reported metrics. Moreover, it's unclear whether the authors reported their
-results as the average of the metrics for each subject or as the maximum of the metrics for each subject. This could
-also help explain the differences in the reported metrics.
 
-In the original paper, the authors provided the per-subject accuracy metrics. However, for specificity and sensitivity,
-they provided one value for the whole dataset. This, unfortunately, makes it difficult to compare the sensitivity and
-specificity metrics between the different papers.
+Here, I have reported the maximum accuracy for each subject achieved with the reproduced and reproduced ablated models
+in TF2. The original implementation is in TF1.x which can explain some of the differences in the reported metrics.
+Moreover, since the authors reported the sensitivity and specificity of their best-performing model, I have reported
+the best-performing model for the original reproduction and original reproduction + attention ablation.
 
 ## Citing
 
